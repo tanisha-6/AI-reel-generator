@@ -1,11 +1,13 @@
+// src/App.jsx
+import React from 'react';
+import AppRoutes from './routes/AppRoutes';
+
 function App() {
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center">
-      <h1 className="text-4xl font-bold">
-        AI Reel Script Generator 🚀
-      </h1>
+    <div className="App">
+      <AppRoutes />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

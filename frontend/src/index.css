@@ -1,1 +1,54 @@
 @import "tailwindcss";
+
+@theme {
+  /* Custom Aigenix Colors */
+  --color-dark-bg: #050505;
+  --color-card-bg: #0a0a0a;
+
+  /* Custom Animations */
+  --keyframes-gradient-x: {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  };
+  --animation-gradient-x: gradient-x 5s ease infinite;
+  
+  --keyframes-scan: {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(300%); }
+  };
+  --animation-scan: scan 2s linear infinite;
+}
+
+/* Base Styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-dark-bg);
+    color: white;
+  }
+  
+  body {
+    @apply antialiased;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-dark-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1a1a1a;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #22d3ee;
+  }
+}
+
+/* Utility for the animated text gradient */
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: var(--animation-gradient-x);
+}
