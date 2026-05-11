@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
     'api',
 ]
@@ -137,5 +138,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
-
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
