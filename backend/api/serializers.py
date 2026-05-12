@@ -1,5 +1,11 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from .models import (
+    Project,
+    ScriptVersion,
+    Scene,
+    Thumbnail
+)
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -17,3 +23,50 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
 
         return user
+
+
+class SceneSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Scene
+        fields = '__all__'
+
+
+class ThumbnailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Thumbnail
+        fields = '__all__'
+
+
+class ScriptVersionSerializer(serializers.ModelSerializer):
+
+    scenes = SceneSerializer(many=True, read_only=True)
+
+    thumbnails = ThumbnailSerializer(
+        many=True,
+        read_only=True
+    )
+
+    class Meta:
+        model = ScriptVersion
+
+        fields = '__all__'
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+
+    scripts = ScriptVersionSerializer(
+        many=True,
+        read_only=True
+    )
+
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
