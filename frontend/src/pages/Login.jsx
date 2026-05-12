@@ -55,17 +55,17 @@ const Login = () => {
         });
 
         localStorage.setItem(
-            'accessToken',
+            'access',
             data.access
         );
 
         localStorage.setItem(
-            'refreshToken',
+            'refresh',
             data.refresh
         );
-
-        alert('Login successful');
-        navigate('/dashboard');
+ 
+      console.log('Login successful');
+      navigate('/dashboard', { replace: true });
 
         } catch (error) {
 

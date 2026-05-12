@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 import os
 
 load_dotenv()
@@ -131,7 +132,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CORS_ALLOW_ALL_ORIGINS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -142,3 +142,12 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+SIMPLE_JWT = {
+
+    'ACCESS_TOKEN_LIFETIME':
+        timedelta(minutes=30),
+
+    'REFRESH_TOKEN_LIFETIME':
+        timedelta(days=7),
+}
