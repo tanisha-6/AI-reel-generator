@@ -75,3 +75,27 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email']
+
+
+# serializers.py – add these classes
+
+class DashboardProjectSerializer(serializers.ModelSerializer):
+    """Minimal project data for dashboard recent list"""
+    latest_thumbnail = serializers.SerializerMethodField()
+    script_count = serializers.IntegerField(source='versions.count', read_only=True)
+
+    class Meta:
+        model = Project
+        fields = ['id', 'name', 'topic', 'platform', 'created_at', 'updated_at', 'latest_thumbnail', 'script_count']
+
+    def get_latest_thumbnail(self, obj):
+        latest_version = obj.versions.order_by('-created_at').first()
+        if latest_version and latest_version.thumbnails.exists():
+            return latest_version.thumbnails.first().image_url
+        return None
+
+
+class DashboardStatsSerializer(serializers.Serializer):
+    total_scripts = serializers.IntegerField()
+    visual_generated = serializers.IntegerField()
+    recent_projects = DashboardProjectSerializer(many=True)

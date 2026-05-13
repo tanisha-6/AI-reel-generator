@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, Zap, Film, Users, TrendingUp, Shield } from 'lucide-react';
+import { Sparkles, Zap, Film, Users, TrendingUp, Shield, ChevronRight } from 'lucide-react';
 import Navbar from '../components/common/Navbar';
 import Footer from '../components/common/Footer';
 
@@ -19,196 +19,208 @@ const Landing = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
+    hidden: { y: 15, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   return (
-    <div className="bg-[#050505] text-white font-sans selection:bg-cyan-500/30 overflow-x-hidden">
+    <div className="bg-[#030303] text-white font-sans selection:bg-cyan-500/30 overflow-x-hidden">
       <Navbar />
 
-      {/* Hero Section - Cleaner, more compact */}
-      <section className="relative max-w-7xl mx-auto px-6 pt-28 pb-20 md:pt-36 md:pb-28 flex flex-col md:flex-row items-center gap-10">
-        <div className="absolute top-20 -left-20 w-96 h-96 bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-purple-600/10 blur-[100px] rounded-full pointer-events-none" />
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-16 md:pt-44 md:pb-24 px-6 overflow-hidden">
+        {/* Ambient Glows */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none -z-10" />
         
-        <motion.div 
-          className="flex-1 space-y-6 z-10"
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-        >
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-bold tracking-widest uppercase">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-            </span>
-            AI-Powered Script Generator
-          </motion.div>
-
-          <motion.h1 variants={itemVariants} className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.2] tracking-tight">
-            Create Viral <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
-              Short-Form Scripts
-            </span>
-            <br /> in Seconds
-          </motion.h1>
-
-          <motion.p variants={itemVariants} className="text-gray-400 max-w-md text-base leading-relaxed">
-            Generate scroll-stopping hooks, scene‑by‑scene breakdowns, and viral CTAs for TikTok, Reels, and Shorts. Used by 10,000+ creators.
-          </motion.p>
-
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-4 pt-2">
-            <button 
-              onClick={() => navigate('/signup')}
-              className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl font-semibold uppercase tracking-wider text-sm hover:scale-105 transition-transform shadow-lg shadow-cyan-500/20"
-            >
-              Start Creating Free
-            </button>
-            <button 
-              onClick={() => document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })}
-              className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl font-semibold uppercase tracking-wider text-sm hover:bg-white/10 transition-colors"
-            >
-              Watch Demo
-            </button>
-          </motion.div>
-
-          <motion.div variants={itemVariants} className="flex items-center gap-6 pt-4">
-            <div className="flex -space-x-2">
-              {[1,2,3,4].map(i => (
-                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-700 to-gray-800 border-2 border-[#050505] flex items-center justify-center text-xs font-bold text-white">
-                  {String.fromCharCode(64+i)}
-                </div>
-              ))}
-            </div>
-            <div className="text-sm text-gray-400">
-              <span className="text-white font-bold">10k+</span> creators already using
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Hero Visual */}
-        <motion.div 
-          className="flex-1 relative w-full"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-4 shadow-[0_0_50px_rgba(34,211,238,0.1)] backdrop-blur-sm">
-            <div className="aspect-video bg-gradient-to-br from-cyan-900/20 to-purple-900/20 rounded-lg border border-white/5 overflow-hidden relative group">
-              <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/20 to-transparent opacity-50 group-hover:opacity-70 transition-opacity"></div>
-              <div className="p-6 space-y-4">
-                <div className="flex items-center gap-2 text-cyan-400">
-                  <Sparkles size={16} />
-                  <span className="text-xs font-mono">AI Synthesis Active</span>
-                </div>
-                <div className="space-y-3">
-                  <div className="h-2 bg-white/10 rounded-full overflow-hidden w-3/4">
-                    <motion.div className="h-full bg-cyan-500 rounded-full" initial={{ width: 0 }} animate={{ width: '85%' }} transition={{ duration: 1.5 }} />
-                  </div>
-                  <p className="text-sm font-mono text-gray-300">Generating hook...</p>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-black/40 rounded-lg p-3 border border-white/5">
-                    <p className="text-[10px] text-cyan-400">Hook Score</p>
-                    <p className="text-2xl font-bold">94<span className="text-xs">%</span></p>
-                  </div>
-                  <div className="bg-black/40 rounded-lg p-3 border border-white/5">
-                    <p className="text-[10px] text-cyan-400">Est. Views</p>
-                    <p className="text-2xl font-bold">1.2M</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Features Section (unchanged) */}
-      <section id="features" className="max-w-7xl mx-auto px-6 py-32">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tighter">Everything you need to go viral</h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">No more blank pages. Let AI handle the structure while you focus on performance.</p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            { icon: <Zap className="w-6 h-6" />, title: "Lightning Fast", desc: "Generate a complete script in under 10 seconds. Iterate instantly." },
-            { icon: <Film className="w-6 h-6" />, title: "Scene Breakdown", desc: "Timestamped visual & narrative cues. Perfect for filming." },
-            { icon: <TrendingUp className="w-6 h-6" />, title: "Viral Optimization", desc: "AI trained on millions of winning short-form videos." },
-            { icon: <Users className="w-6 h-6" />, title: "Creator Community", desc: "Access trending formats and successful hooks." },
-            { icon: <Shield className="w-6 h-6" />, title: "100% Original", desc: "Every script is unique and plagiarism‑free." },
-            { icon: <Sparkles className="w-6 h-6" />, title: "AI Thumbnails", desc: "Generated thumbnails tailored to your script." }
-          ].map((feature, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="group p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-cyan-500/30 transition-all duration-300"
-            >
-              <div className="w-12 h-12 bg-cyan-500/10 rounded-xl mb-6 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
-                {feature.icon}
-              </div>
-              <h3 className="text-xl font-bold mb-3 tracking-tight">{feature.title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{feature.desc}</p>
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+          <motion.div 
+            className="flex-1 space-y-8 text-center lg:text-left z-10"
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+          >
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-cyan-400 text-[11px] font-black uppercase tracking-[0.2em]">
+              <Sparkles size={12} className="animate-pulse" />
+              Next-Gen Scripting Engine
             </motion.div>
-          ))}
+
+            <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tighter uppercase">
+              Script Your <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+                Viral Breakout
+              </span>
+            </motion.h1>
+
+            <motion.p variants={itemVariants} className="text-gray-400 max-w-xl mx-auto lg:mx-0 text-lg leading-relaxed font-medium">
+              Turn a single sentence into a high-retention script with hooks, scene breakdowns, and CTAs optimized for the algorithm.
+            </motion.p>
+
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <button 
+                onClick={() => navigate('/signup')}
+                className="w-full sm:w-auto px-8 py-4 bg-white text-black rounded-full font-black uppercase tracking-widest text-xs hover:bg-cyan-400 transition-colors shadow-xl shadow-white/5"
+              >
+                Get Started Free
+              </button>
+              {/* <button 
+                onClick={() => document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })}
+                className="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 rounded-full font-black uppercase tracking-widest text-xs hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+              >
+                Watch Demo <ChevronRight size={14} />
+              </button> */}
+            </motion.div>
+
+            <motion.div variants={itemVariants} className="flex items-center justify-center lg:justify-start gap-4 pt-4 opacity-60">
+              <div className="flex -space-x-3">
+                {[1,2,3,4].map(i => (
+                  <div key={i} className="w-9 h-9 rounded-full bg-zinc-800 border-2 border-[#030303] flex items-center justify-center text-[10px] font-bold uppercase">
+                    U{i}
+                  </div>
+                ))}
+              </div>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-gray-500">
+                Trusted by <span className="text-white">12,000+</span> Content Creators
+              </p>
+            </motion.div>
+          </motion.div>
+
+          {/* Hero Visual - Dashboard Preview */}
+          <motion.div 
+            className="flex-1 w-full lg:max-w-2xl"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          >
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all opacity-50" />
+              <div className="relative bg-[#0a0a0a] border border-white/10 rounded-3xl p-2 md:p-4 shadow-2xl backdrop-blur-xl">
+                <div className="aspect-[4/3] rounded-2xl bg-[#050505] border border-white/5 overflow-hidden flex flex-col">
+                   <div className="p-4 border-b border-white/5 flex items-center justify-between">
+                      <div className="flex gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/20" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/20" />
+                      </div>
+                      <div className="px-3 py-1 bg-white/5 rounded text-[9px] font-mono text-gray-500">studio_v2.ai</div>
+                   </div>
+                   <div className="p-6 space-y-6">
+                      <div className="space-y-2">
+                        <div className="h-4 w-1/3 bg-cyan-500/20 rounded animate-pulse" />
+                        <div className="h-8 w-full bg-white/5 rounded-lg" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="h-24 bg-white/[0.02] border border-white/5 rounded-xl p-4">
+                           <div className="h-2 w-1/2 bg-gray-700 rounded mb-4" />
+                           <div className="h-8 w-3/4 bg-white/10 rounded" />
+                        </div>
+                        <div className="h-24 bg-white/[0.02] border border-white/5 rounded-xl p-4">
+                           <div className="h-2 w-1/2 bg-gray-700 rounded mb-4" />
+                           <div className="h-8 w-1/2 bg-cyan-500/20 rounded" />
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                         <div className="h-2 w-full bg-white/5 rounded" />
+                         <div className="h-2 w-[90%] bg-white/5 rounded" />
+                         <div className="h-2 w-[70%] bg-white/5 rounded" />
+                      </div>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* How It Works (unchanged) */}
-      <section id="how-it-works" className="max-w-7xl mx-auto px-6 py-32 border-t border-white/5">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tighter">Three steps to your next viral hit</h2>
-          <p className="text-gray-400">Simple. Fast. Effective.</p>
+      {/* Features - Compact Grid */}
+      <section id="features" className="max-w-7xl mx-auto px-6 py-20 border-t border-white/5">
+        <div className="max-w-3xl mb-16">
+          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4">Master the Algorithm</h2>
+          <p className="text-gray-500 font-medium">Tools designed to maximize retention and spark engagement across every vertical platform.</p>
         </div>
-        <div className="grid md:grid-cols-3 gap-12">
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { step: "01", title: "Input Your Topic", desc: "Just a topic or a rough idea. Our AI handles the rest." },
-            { step: "02", title: "AI Generates Script", desc: "Get a complete script with hook, scenes, and CTA in seconds." },
-            { step: "03", title: "Record & Upload", desc: "Follow the scene breakdown or tweak it. Then go viral." }
-          ].map((step, i) => (
-            <div key={i} className="text-center">
-              <div className="text-6xl font-black text-cyan-500/20 mb-4">{step.step}</div>
-              <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-              <p className="text-gray-400">{step.desc}</p>
+            { icon: <Zap />, title: "Instant Generation", desc: "Go from topic idea to production-ready script in less than 5 seconds." },
+            { icon: <Film />, title: "Visual Direction", desc: "Detailed scene breakdowns with camera movements and visual cues included." },
+            { icon: <TrendingUp />, title: "Retention Logic", desc: "Trained on millions of hours of high-performing short-form content." },
+            { icon: <Users />, title: "Style Cloning", desc: "Mimic your favorite creator's tone or maintain your unique brand voice." },
+            { icon: <Shield />, title: "Plagiarism Guard", desc: "AI ensures every script is 100% unique to pass platform originality checks." },
+            { icon: <Sparkles />, title: "Hook Architect", desc: "Generate 5 variations of high-converting hooks for every project." }
+          ].map((feature, i) => (
+            <div 
+              key={i}
+              className="p-8 rounded-3xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-all group"
+            >
+              <div className="w-10 h-10 bg-white/5 rounded-xl mb-6 flex items-center justify-center text-cyan-400 group-hover:text-white transition-colors">
+                {React.cloneElement(feature.icon, { size: 20 })}
+              </div>
+              <h3 className="text-lg font-black uppercase tracking-tight mb-3">{feature.title}</h3>
+              <p className="text-gray-500 text-sm leading-relaxed font-medium">{feature.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* CTA Section (unchanged) */}
-      <section id="demo" className="max-w-5xl mx-auto px-6 py-32">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          className="bg-gradient-to-br from-cyan-500/10 via-purple-500/5 to-transparent border border-white/10 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden"
-        >
-          <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/20 blur-[100px] rounded-full" />
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tighter mb-6">Ready to create your next viral script?</h2>
-          <p className="text-gray-300 max-w-xl mx-auto mb-10 text-lg">Join thousands of creators who trust AiShot to fuel their content engine.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <input 
-              type="email" 
-              placeholder="Enter your email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 px-6 py-4 bg-black/50 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50"
-            />
-            <button 
-              onClick={handleEarlyAccess}
-              className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl font-bold uppercase tracking-wider hover:scale-105 transition-transform shadow-lg shadow-cyan-500/20"
-            >
-              Get Started Free
-            </button>
+      {/* Steps - Simplified & reduced spacing */}
+      <section id="how-it-works" className="max-w-7xl mx-auto px-6 py-20 bg-[#070707] rounded-[3rem] my-10 border border-white/5">
+        <div className="flex flex-col lg:flex-row gap-12 items-center">
+          <div className="lg:w-1/3">
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4">The Workflow</h2>
+            <p className="text-gray-500 font-medium">Streamlined from start to finish. Focus on filming, not writing.</p>
           </div>
-          <p className="text-xs text-gray-500 mt-6">No credit card required. Free tier includes 5 scripts.</p>
-        </motion.div>
+          <div className="lg:w-2/3 grid md:grid-cols-3 gap-8">
+            {[
+              { num: "01", t: "Concept", d: "Drop a topic or URL as your base." },
+              { num: "02", t: "Develop", d: "AI crafts the structure & scenes." },
+              { num: "03", t: "Deploy", d: "Copy, film, and watch it trend." }
+            ].map((step, i) => (
+              <div key={i} className="relative">
+                <span className="text-5xl font-black text-white/5 absolute -top-4 -left-2 select-none">{step.num}</span>
+                <div className="relative z-10 pl-2">
+                  <h3 className="font-black uppercase text-sm mb-2 text-cyan-400 tracking-widest">{step.t}</h3>
+                  <p className="text-gray-400 text-sm font-medium">{step.d}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - Professional & Focused */}
+      <section id="demo" className="max-w-7xl mx-auto px-6 py-20">
+        <div className="relative rounded-[3rem] overflow-hidden bg-gradient-to-br from-zinc-900 to-black border border-white/10 p-10 md:p-20 text-center">
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-cyan-500/10 blur-[100px] rounded-full" />
+          
+          <div className="relative z-10 max-w-2xl mx-auto space-y-8">
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none">
+              Your Viral Era <br /> Starts Today
+            </h2>
+            <p className="text-gray-400 font-medium">Join 12,000+ creators who have automated their scriptwriting process. No credit card required.</p>
+            
+            <div className="flex flex-col sm:flex-row items-center gap-3 p-2 bg-white/5 border border-white/10 rounded-2xl sm:rounded-full">
+              <input 
+                type="email" 
+                placeholder="creator@yourbrand.com" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full flex-1 bg-transparent px-6 py-3 text-sm focus:outline-none placeholder:text-gray-600"
+              />
+              <button 
+                onClick={handleEarlyAccess}
+                className="w-full sm:w-auto px-8 py-4 bg-cyan-500 text-black rounded-xl sm:rounded-full font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all whitespace-nowrap"
+              >
+                Start Creating
+              </button>
+            </div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600">
+              Free forever tier • 5 Scripts per month • Pro features available
+            </p>
+          </div>
+        </div>
       </section>
 
       <Footer />

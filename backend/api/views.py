@@ -5,6 +5,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
+from django.db.models import Sum, Count
+from .serializers import DashboardStatsSerializer, DashboardProjectSerializer
+
 from .serializers import (
     RegisterSerializer,
     ScriptVersionSerializer,
@@ -152,3 +155,34 @@ def get_projects(request):
     )
 
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+
+def dashboard_stats(request):
+
+    user = request.user
+
+    total_scripts = Project.objects.filter(
+        user=user
+    ).count()
+
+    visual_generated = Thumbnail.objects.filter(
+        script_version__project__user=user
+    ).count()
+
+    recent_projects = Project.objects.filter(
+        user=user
+    ).order_by('-created_at')[:5]
+
+    data = {
+        'total_scripts': total_scripts,
+        'visual_generated': visual_generated,
+        'recent_projects': DashboardProjectSerializer(
+            recent_projects,
+            many=True
+        ).data
+    }
+
+    return Response(data)
