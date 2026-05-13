@@ -150,3 +150,5 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME':
         timedelta(days=7),
 }
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
