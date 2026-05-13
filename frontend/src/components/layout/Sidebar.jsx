@@ -19,7 +19,7 @@ const Sidebar = () => {
     { icon: <LayoutDashboard size={18}/>, label: "Dashboard", path: "/dashboard" },
     { icon: <Sparkles size={18}/>, label: "AI Studio", path: "/studio" },
     { icon: <Library size={18}/>, label: "Library", path: "/library" },
-    { icon: <ImageIcon size={18}/>, label: "Thumbnail Lab", path: "/thumbnails" },
+    // { icon: <ImageIcon size={18}/>, label: "Thumbnail Lab", path: "/thumbnails" },
   ];
 
   const secondaryNav = [
