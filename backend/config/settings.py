@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-d*bj!&=hy4w4ahp(0bzr=il=o4w#w&40!ma=wra+83aq%8m$pg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -139,9 +139,8 @@ REST_FRAMEWORK = {
     ),
 }
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 SIMPLE_JWT = {
 
