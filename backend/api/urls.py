@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (
     register_user,
     generate_script,
-    current_user
+    current_user,
+    get_projects
 )
 
 from rest_framework_simplejwt.views import (
@@ -20,4 +21,6 @@ urlpatterns = [
     path('generate-script/', generate_script),
 
     path('me/', current_user),
+
+    path('projects/',get_projects),
 ]

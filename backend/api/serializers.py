@@ -55,9 +55,14 @@ class ScriptVersionSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
 
-    scripts = ScriptVersionSerializer(
+    versions = ScriptVersionSerializer(
         many=True,
         read_only=True
+    )
+
+    collection_id = serializers.CharField(
+        required=False, 
+        allow_null=True
     )
 
     class Meta:

@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+// Studio.jsx
+import React, { useState, useEffect } from 'react';
 import { generateScript } from '../services/scriptService';
+// import { saveProject } from '../services/projectService';
 import MainLayout from '../layouts/MainLayout';
 import { 
   Sparkles, Video, Mic, Layout, ChevronDown, 
   RefreshCw, ChevronLeft, ChevronRight, Hash, 
   Terminal, Image as ImageIcon, Plus, Clock3, Sparkle 
 } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 const Studio = () => {
-  
+  const [currentProjectId, setCurrentProjectId] = useState(null);
+
+  const location = useLocation();
+
   const [historyIndex, setHistoryIndex] = useState(0);
 
   const [loading, setLoading] = useState(false);
@@ -22,6 +28,17 @@ const Studio = () => {
 
   const [scriptHistory, setScriptHistory] = useState([]);
 
+  useEffect(() => {
+    if (location.state?.projectHistory) {
+      setScriptHistory(location.state.projectHistory);
+      // Set to the last version (newest)
+      setHistoryIndex(location.state.projectHistory.length - 1);
+    }
+    if (location.state?.initialInputs) {
+      setFormData(location.state.initialInputs);
+    }
+  }, [location.state]);
+
   const handleChange = (e) => {
 
     const { name, value } = e.target;
@@ -32,63 +49,116 @@ const Studio = () => {
     });
   };
 
+  // --- HELPER: SAVE TO PERSISTENCE (both localStorage and backend) ---
+  // const persistProject = async (data) => {
+  //   const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+  //   let updatedProjects;
+  //   let targetId = currentProjectId;
+
+  //   if (targetId) {
+  //     // Regeneration: add a new version to existing project
+  //     updatedProjects = existingProjects.map(p => {
+  //       if (p.id === targetId) {
+  //         return { ...p, versions: [...(p.versions || []), data] };
+  //       }
+  //       return p;
+  //     });
+  //   } else {
+  //     // First generation: create new project
+  //     targetId = Date.now().toString();
+  //     const newProject = {
+  //       id: targetId,
+  //       collectionId: location.state?.collectionId || null,
+  //       name: data.title || formData.topic,
+  //       topic: formData.topic,
+  //       niche: formData.niche,
+  //       platform: formData.platform,
+  //       content_style: formData.content_style,
+  //       created_at: new Date().toISOString(),
+  //       versions: [data]
+  //     };
+  //     updatedProjects = [...existingProjects, newProject];
+  //     setCurrentProjectId(targetId);
+  //   }
+
+  //   // Save to localStorage (for offline / quick access)
+  //   localStorage.setItem('projects', JSON.stringify(updatedProjects));
+
+  //   // Save to backend via API
+  //   const projectToSave = updatedProjects.find(p => p.id === targetId);
+  //   if (projectToSave) {
+  //     try {
+  //       await saveProject(projectToSave);
+  //     } catch (error) {
+  //       console.error('Failed to save project to backend:', error);
+  //       // Optionally alert user, but don't block UX
+  //     }
+  //   }
+
+  //   // Link to collection (only on first creation) – also update collection on backend?
+  //   if (!currentProjectId && location.state?.collectionId) {
+  //     const savedCols = JSON.parse(localStorage.getItem('ai_studio_collections') || '[]');
+  //     const updatedCols = savedCols.map(col => {
+  //       if (col.id === location.state.collectionId) {
+  //         return { ...col, projectIds: [...col.projectIds, targetId] };
+  //       }
+  //       return col;
+  //     });
+  //     localStorage.setItem('ai_studio_collections', JSON.stringify(updatedCols));
+  //     // Also sync collection update to backend if you have a collection endpoint
+  //   }
+
+  //   // Notify other components (like Library) that data has changed
+  //   window.dispatchEvent(new CustomEvent('project-updated'));
+
+  //   return targetId;
+  // };
+  
   const handleGenerate = async () => {
-
     if (!formData.topic.trim()) {
       alert('Please enter a topic');
       return;
     }
-
     try {
-
       setLoading(true);
-
-      const data = await generateScript(formData);
-
-      setScriptHistory((prev) => [data, ...prev]);
-
-      setHistoryIndex(0);
-
+      // Pass along the collectionId if we are inside a collection
+      const data = await generateScript({
+        ...formData,
+        collectionId: location.state?.collectionId
+      });
+      setScriptHistory((prev) => [...prev, data]);
+      setHistoryIndex(scriptHistory.length);
+      // Notify Library to refetch from backend
+      window.dispatchEvent(new CustomEvent('project-updated'));
     } catch (error) {
-
       console.log(error);
-
       alert('Failed to generate script');
-
     } finally {
-
       setLoading(false);
     }
   };
 
-  const handleRegenerate = async () => {
-
-    if (!formData.topic.trim()) {
-      alert('Please enter a topic');
-      return;
-    }
-
-    try {
-
-      setLoading(true);
-
-      const data = await generateScript(formData);
-
-      setScriptHistory((prev) => [data, ...prev]);
-
-      setHistoryIndex(0);
-
-    } catch (error) {
-
-      console.log(error);
-
-      alert('Failed to regenerate script');
-
-    } finally {
-
-      setLoading(false);
-    }
-  };
+const handleRegenerate = async () => {
+  if (!formData.topic.trim()) {
+    alert('Please enter a topic');
+    return;
+  }
+  try {
+    setLoading(true);
+    const data = await generateScript({
+      ...formData,
+      collectionId: location.state?.collectionId
+    });
+    setScriptHistory((prev) => [...prev, data]);
+    setHistoryIndex(scriptHistory.length);
+    window.dispatchEvent(new CustomEvent('project-updated'));
+  } catch (error) {
+    console.log(error);
+    alert('Failed to regenerate script');
+  } finally {
+    setLoading(false);
+  }
+};
 
   // --- HANDLERS ---
   const handleNext = () => historyIndex < scriptHistory.length - 1 && setHistoryIndex(h => h + 1);
@@ -256,7 +326,9 @@ const Studio = () => {
               <button onClick={handlePrev} disabled={historyIndex === 0} className="p-2 bg-white/5 border border-white/10 rounded-lg hover:text-cyan-400 transition-colors disabled:opacity-20"><ChevronLeft size={20}/></button>
               <button onClick={handleNext} disabled={historyIndex === scriptHistory.length - 1} className="p-2 bg-white/5 border border-white/10 rounded-lg hover:text-cyan-400 transition-colors disabled:opacity-20"><ChevronRight size={20}/></button>
             </div>
-            <span className="text-[10px] font-mono text-gray-500 uppercase tracking-[0.3em]">Version {scriptHistory.length ? historyIndex + 1 : 0} // Archive_{historyIndex + 101}</span>
+            <span className="text-[10px] font-mono text-gray-500 uppercase tracking-[0.3em]">
+              Version {scriptHistory.length > 0 ? historyIndex + 1 : 0}
+            </span>
           </div>
 
           {/* Main Card: Title & Hook */}
@@ -332,9 +404,11 @@ const Studio = () => {
                   alt={img.label}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
+                  // This helps debug if the URL is broken
+                  onLoad={() => console.log(`Thumbnail ${idx} loaded successfully`)}
                   onError={(e) => {
-                    e.target.src =
-                      'https://placehold.co/600x400/111111/00ffff?text=Thumbnail+Failed';
+                    console.error("Thumbnail failed to load:", img.image_url);
+                    e.target.src = 'https://placehold.co/1280x720/0a0a0a/22d3ee?text=Rendering+Thumbnail...';
                   }}
                 />
 
@@ -353,4 +427,4 @@ const Studio = () => {
     </MainLayout>
   );
 };
-export default Studio; 
+export default Studio;

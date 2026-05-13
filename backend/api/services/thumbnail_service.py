@@ -85,115 +85,146 @@
 
 
 
-import os
-import json
-import requests
+# import os
+# import json
+# import requests
+# import urllib.parse
+
+# from dotenv import load_dotenv
+
+# load_dotenv()
+
+# OPENROUTER_API_KEY = os.getenv(
+#     "OPENROUTER_API_KEY"
+# )
+
+
+# def generate_thumbnail_variations(topic, title):
+
+#     prompt = f"""
+#     Generate ONLY valid JSON.
+
+#     Create 3 SHORT AI image prompts
+#     for viral YouTube thumbnails.
+
+#     Topic: {topic}
+#     Title: {title}
+
+#     Keep prompts SHORT.
+#     Max 8 words each.
+
+#     Format:
+
+#     {{
+#       "thumbnails": [
+#         {{
+#           "label": "",
+#           "prompt": ""
+#         }}
+#       ]
+#     }}
+#     """
+
+#     try:
+
+#         response = requests.post(
+
+#             url="https://openrouter.ai/api/v1/chat/completions",
+
+#             headers={
+#                 "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+#                 "Content-Type": "application/json",
+#             },
+
+#             json={
+
+#                 "model": "google/gemini-2.0-flash-001",
+
+#                 "response_format": {
+#                     "type": "json_object"
+#                 },
+
+#                 "messages": [
+#                     {
+#                         "role": "user",
+#                         "content": prompt
+#                     }
+#                 ]
+#             }
+#         )
+
+#         result = response.json()
+
+#         content = result["choices"][0]["message"]["content"]
+
+#         data = json.loads(content)
+
+#         thumbnails = []
+
+#         for item in data["thumbnails"]:
+
+#             short_prompt = item["prompt"]
+
+#             encoded_prompt = urllib.parse.quote(
+#                 short_prompt
+#             )
+
+#             image_url = (
+#                 f"https://image.pollinations.ai/prompt/{encoded_prompt}"
+#             )
+
+#             thumbnails.append({
+
+#                 "label": item["label"],
+
+#                 "image_url": image_url
+#             })
+
+#         return thumbnails
+
+#     except Exception as e:
+
+#         print("THUMBNAIL ERROR:")
+#         print(e)
+
+#         return [
+#             {
+#                 "label": "AI Thumbnail",
+#                 "image_url":
+#                 "https://image.pollinations.ai/prompt/AI%20thumbnail"
+#             }
+#         ]
+
+
 import urllib.parse
-
-from dotenv import load_dotenv
-
-load_dotenv()
-
-OPENROUTER_API_KEY = os.getenv(
-    "OPENROUTER_API_KEY"
-)
-
+import random
 
 def generate_thumbnail_variations(topic, title):
+    prompts = [
+        f"viral youtube thumbnail for {topic}, high quality, 4k",
+        f"cinematic influencer style thumbnail about {title}, vibrant colors",
+        f"3d render social media thumbnail for {topic}, professional lighting"
+    ]
 
-    prompt = f"""
-    Generate ONLY valid JSON.
+    thumbnails = []
 
-    Create 3 SHORT AI image prompts
-    for viral YouTube thumbnails.
+    for index, prompt in enumerate(prompts):
+        # Generate a random seed to ensure unique images every time
+        seed = random.randint(1, 100000)
+        encoded_prompt = urllib.parse.quote(prompt)
 
-    Topic: {topic}
-    Title: {title}
-
-    Keep prompts SHORT.
-    Max 8 words each.
-
-    Format:
-
-    {{
-      "thumbnails": [
-        {{
-          "label": "",
-          "prompt": ""
-        }}
-      ]
-    }}
-    """
-
-    try:
-
-        response = requests.post(
-
-            url="https://openrouter.ai/api/v1/chat/completions",
-
-            headers={
-                "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-                "Content-Type": "application/json",
-            },
-
-            json={
-
-                "model": "google/gemini-2.0-flash-001",
-
-                "response_format": {
-                    "type": "json_object"
-                },
-
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ]
-            }
+        # Pollinations works best with these parameters for aspect ratio
+        image_url = (
+            f"https://image.pollinations.ai/prompt/{encoded_prompt}"
+            f"?width=1280&height=720&nologo=true&seed={seed}"
         )
 
-        result = response.json()
+        thumbnails.append({
+            "label": f"Variation {index + 1}",
+            "image_url": image_url
+        })
 
-        content = result["choices"][0]["message"]["content"]
-
-        data = json.loads(content)
-
-        thumbnails = []
-
-        for item in data["thumbnails"]:
-
-            short_prompt = item["prompt"]
-
-            encoded_prompt = urllib.parse.quote(
-                short_prompt
-            )
-
-            image_url = (
-                f"https://image.pollinations.ai/prompt/{encoded_prompt}"
-            )
-
-            thumbnails.append({
-
-                "label": item["label"],
-
-                "image_url": image_url
-            })
-
-        return thumbnails
-
-    except Exception as e:
-
-        print("THUMBNAIL ERROR:")
-        print(e)
-
-        return [
-            {
-                "label": "AI Thumbnail",
-                "image_url":
-                "https://image.pollinations.ai/prompt/AI%20thumbnail"
-            }
-        ]
+    return thumbnails
 
 
 # import os

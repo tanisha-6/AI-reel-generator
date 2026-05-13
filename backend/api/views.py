@@ -8,7 +8,8 @@ from rest_framework import status
 from .serializers import (
     RegisterSerializer,
     ScriptVersionSerializer,
-    UserSerializer
+    UserSerializer,
+    ProjectSerializer
 )
 from .models import (
     Project,
@@ -42,17 +43,24 @@ def generate_script(request):
 
     ai_response = generate_ai_script(request.data)
 
+    collection_id = request.data.get("collectionId")   # frontend sends "collectionId"
+
     project, created = Project.objects.get_or_create(
         user=request.user,
         name=request.data.get("topic"),
-
         defaults={
             "topic": request.data.get("topic"),
             "niche": request.data.get("niche"),
             "platform": request.data.get("platform"),
             "content_style": request.data.get("content_style"),
+            "collection_id": collection_id,   # <-- add this
         }
     )
+
+    # If project already existed but collection_id is missing/needs update, optionally update it
+    if not created and collection_id:
+        project.collection_id = collection_id
+        project.save(update_fields=['collection_id'])
 
     script = ScriptVersion.objects.create(
 
@@ -119,10 +127,28 @@ def generate_script(request):
 
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def current_user(request):
 
     serializer = UserSerializer(request.user)
+
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+
+def get_projects(request):
+
+    projects = Project.objects.filter(
+        user=request.user
+    ).order_by('-created_at')
+
+    serializer = ProjectSerializer(
+        projects,
+        many=True
+    )
 
     return Response(serializer.data)
